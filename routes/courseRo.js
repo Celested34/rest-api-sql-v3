@@ -1,15 +1,14 @@
 const express = require("express");
 
-//from middleware folder
+// from middleware folder
 const { asyncHandler } = require("../middleware/async-handler");
 const { authenticateUser } = require("../middleware/auth-user");
 
-//from models folder
 const { User, Course } = require("../models");
 
 const router = express.Router();
 
-//return list of courses
+//get courses
 router.get(
   "/",
   asyncHandler(async (req, res) => {
@@ -19,7 +18,7 @@ router.get(
       },
       include: {
         model: User,
-        as: "user",
+        as: "User",
         attributes: {
           exclude: ["password", "createdAt", "updatedAt"],
         },
@@ -31,7 +30,7 @@ router.get(
   })
 );
 
-//return course by id
+//get specific course
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
@@ -44,7 +43,7 @@ router.get(
       },
       include: {
         model: User,
-        as: "user",
+        as: "User",
         attributes: {
           exclude: ["password", "createdAt", "updatedAt"],
         },
@@ -56,7 +55,7 @@ router.get(
   })
 );
 
-//create courses
+//make new course
 router.post(
   "/",
   authenticateUser,
@@ -98,7 +97,7 @@ router.put(
       } else {
         res
           .status(403)
-          .json({ error: "You cannot update course that you dont owned" });
+          .json({ error: "Can not update course." });
       }
     } catch (error) {
       console.log("ERROR: ", error);
@@ -128,7 +127,7 @@ router.delete(
       } else {
         res
           .status(403)
-          .json({ error: "You cannot destroy a course that you dont owned" });
+          .json({ error: "Can not delete course." });
       }
     } catch (error) {
       console.log("ERROR: ", error);

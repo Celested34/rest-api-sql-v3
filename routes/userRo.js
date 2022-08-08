@@ -1,28 +1,29 @@
 const express = require("express");
+
 //from middleware folder
 const { asyncHandler } = require("../middleware/async-handler");
 const { authenticateUser } = require("../middleware/auth-user");
 
-//from models folder
 const { User } = require("../models");
 
 const router = express.Router();
 
-//get users
-router.get('/', authenticateUser, asyncHandler(async (req, res) => {
-  const user = req.currentUser;
+//get user
+router.get(
+  "/",
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    const user = req.currentUser;
+    res.json({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      emailAddress: user.emailAddress,
+    });
+  })
+);
 
-  res.json({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    emailAddress: user.emailAddress,
-    password: user.password
-  });
-  res.status(200);
-}));
-
-
-//make new users
+//create new user
 router.post(
   "/",
   asyncHandler(async (req, res) => {

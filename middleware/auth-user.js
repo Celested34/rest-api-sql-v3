@@ -1,8 +1,9 @@
 'use strict';
 
 const auth = require('basic-auth');
-const bcrypt = require('bcryptjs')
-const { User } = require('../models')
+const bcrypt = require('bcryptjs');
+const e = require("express");
+const { User } = require('../models');
 
 // express middleware function to authenticate routes
 exports.authenticateUser = async(req,res,next) =>{
